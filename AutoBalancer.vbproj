@@ -73,6 +73,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backup\BackupService.vb" />
     <Compile Include="frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +81,13 @@
       <DependentUpon>frmMain.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Logs\Logger.vb" />
+    <Compile Include="Models\ControlNo.vb" />
+    <Compile Include="Models\PostTrans.vb" />
+    <Compile Include="Models\Transpay.vb" />
+    <Compile Include="Modules\DatabaseHelper.vb" />
+    <Compile Include="Modules\SequenceHelper.vb" />
+    <Compile Include="Modules\ValidationHelper.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -121,12 +129,6 @@
     <None Include="My Project\tutor-mode.md" />
     <None Include="tutor-mode.md" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Backup\" />
-    <Folder Include="Logs\" />
-    <Folder Include="Models\" />
-    <Folder Include="Modules\" />
-    <Folder Include="Views\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
