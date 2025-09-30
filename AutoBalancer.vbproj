@@ -77,12 +77,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Backup\BackupService.vb" />
+    <Compile Include="frmMain.Designer.vb">
+      <DependentUpon>frmMain.vb</DependentUpon>
+    </Compile>
     <Compile Include="frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmMain.Designer.vb">
-      <DependentUpon>frmMain.vb</DependentUpon>
-      <SubType>Form</SubType>
+    <Compile Include="CustomProgressBarX.vb">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Logs\Logger.vb" />
     <Compile Include="Models\ControlNo.vb" />
