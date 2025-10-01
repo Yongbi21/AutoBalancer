@@ -12,8 +12,6 @@ AutoBalancer is a utility designed to automatically reconcile erroneous transact
 3. [Installation](#installation)
 4. [Usage](#usage)
 5. [Configuration](#configuration)
-6. [Contributing](#contributing)
-7. [License](#license)
 
 ---
 
@@ -73,20 +71,5 @@ Configuration settings can be adjusted within the application interface. Key par
 
 For advanced configurations, refer to the \`App.config\` file located in the project directory.
 
----
 
-## Contributing
 
-Contributions to AutoBalancer are welcome. To contribute:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Implement your changes and commit them with descriptive messages.
-4. Push your changes to your forked repository.
-5. Submit a pull request detailing your changes and their purpose.
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
