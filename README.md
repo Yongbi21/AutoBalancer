@@ -1,22 +1,22 @@
-AutoBalancer
+###AutoBalancer
 
-AutoBalancer is a utility designed to automatically reconcile erroneous transactions in the Microsoft Access database utilized by POS terminals. This tool streamlines the correction process, ensuring data integrity and minimizing manual intervention.
+##AutoBalancer is a utility designed to automatically reconcile erroneous transactions in the Microsoft Access database utilized by POS terminals. This tool streamlines the correction process, ensuring data integrity and minimizing manual intervention.
 
-Table of Contents
+#Table of Contents
 
-Overview
+#Overview
 
-Features
+##eatures
 
-Installation
+#Installation
 
-Usage
+#Usage
 
-Configuration
+#Configuration
 
-Contributing
+#Contributing
 
-License
+
 
 Overview
 
