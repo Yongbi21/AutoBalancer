@@ -3,11 +3,11 @@
 AutoBalancer is a utility designed to automatically reconcile erroneous transactions in the Microsoft Access database utilized by POS terminals. This tool streamlines the correction process, ensuring data integrity and minimizing manual intervention.
 
 ## Table of Contents
-### Overview
-### eatures
-### Installation
-### Usage
-### Configuration
+Overview
+Features
+Installation
+Usage
+Configuration
 
 
 # Overview
@@ -28,9 +28,8 @@ Microsoft Access Database (MDB or ACCDB format)
 
 ## Steps
 
-### Clone the repository:
-### git clone https://github.com/Yongbi21/AutoBalancer.git
-
+Clone the repository:
+git clone https://github.com/Yongbi21/AutoBalancer.git
 Open the solution file AutoBalancer.sln in Visual Studio.
 Build the solution to restore dependencies and compile the application.
 Navigate to the output directory and run AutoBalancer.exe.
