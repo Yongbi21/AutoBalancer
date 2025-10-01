@@ -25,7 +25,7 @@ POS terminals often encounter transaction discrepancies that require manual corr
 
 ## Features
 
-- **Automated Transaction Reconciliation**: Automatically detects and corrects erroneous transactions in the database.
+- **Automated Transaction Balancing**: Automatically detects and balances erroneous transactions in the database.
 - **User-Friendly Interface**: Provides an intuitive graphical user interface for ease of use.
 - **Configurable Settings**: Allows customization of reconciliation parameters to suit specific requirements.
 - **Logging and Reporting**: Generates logs and reports for audit and troubleshooting purposes.
@@ -68,7 +68,7 @@ git clone https://github.com/Yongbi21/AutoBalancer.git
 Configuration settings can be adjusted within the application interface. Key parameters include:
 
 - **Transaction Thresholds**: Define acceptable ranges for transaction amounts.
-- **Reconciliation Rules**: Set criteria for identifying and correcting erroneous transactions.
+- **Balancing Rules**: Set criteria for identifying and correcting erroneous transactions.
 - **Logging Options**: Choose the level of detail for generated logs.
 
 For advanced configurations, refer to the \`App.config\` file located in the project directory.
