@@ -22,7 +22,8 @@ Configurable Settings: Allows customization of reconciliation parameters to suit
 Logging and Reporting: Generates logs and reports for audit and troubleshooting purposes.
 
 ## Installation
-## Prerequisites
+
+### Prerequisites
 Microsoft Access Database (MDB or ACCDB format)
 .NET Framework 4.5 or higher
 
