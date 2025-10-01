@@ -11,7 +11,6 @@ AutoBalancer is a utility designed to automatically reconcile erroneous transact
 2. [Features](#features)
 3. [Installation](#installation)
 4. [Usage](#usage)
-5. [Configuration](#configuration)
 
 ---
 
@@ -58,18 +57,6 @@ git clone https://github.com/Yongbi21/AutoBalancer.git
 3. Configure the reconciliation settings as per your requirements.
 4. Click on the "Start" button to begin the automated reconciliation process.
 5. Monitor the progress through the status bar and review the generated reports upon completion.
-
----
-
-## Configuration
-
-Configuration settings can be adjusted within the application interface. Key parameters include:
-
-- **Transaction Thresholds**: Define acceptable ranges for transaction amounts.
-- **Balancing Rules**: Set criteria for identifying and correcting erroneous transactions.
-- **Logging Options**: Choose the level of detail for generated logs.
-
-For advanced configurations, refer to the \`App.config\` file located in the project directory.
 
 
 
