@@ -11,9 +11,10 @@
     <AssemblyName>AutoBalancer</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -87,9 +88,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Logs\Logger.vb" />
-    <Compile Include="Models\ControlNo.vb" />
-    <Compile Include="Models\PostTrans.vb" />
-    <Compile Include="Models\Transpay.vb" />
+    <Compile Include="Models\CONTROL.vb" />
+    <Compile Include="Models\POSTRANS.vb" />
+    <Compile Include="Models\TRANSPAY.vb" />
     <Compile Include="Modules\DatabaseHelper.vb" />
     <Compile Include="Modules\SequenceHelper.vb" />
     <Compile Include="Modules\ValidationHelper.vb" />
@@ -97,6 +98,7 @@
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>

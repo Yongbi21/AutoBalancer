@@ -1,25 +1,29 @@
-Imports System.Data.OleDb
+﻿Imports System.Data.OleDb
 Imports AutoBalancer.Models
+Imports System.Linq
 
 Namespace Modules
     Public Class DatabaseHelper
 
         Public Shared Function OpenDatabase(dbPath As String) As OleDbConnection
-            Dim connectionString As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" & dbPath & ";Persist Security Info=False;"
+            Dim connectionString As String =
+                "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" & dbPath & ";Persist Security Info=False;"
             Dim connection As New OleDbConnection(connectionString)
             connection.Open()
             Return connection
         End Function
 
-        Public Shared Function ReadControlNo(connection As OleDbConnection) As List(Of ControlNo)
-            Dim controlNos As New List(Of ControlNo)
-            Dim query As String = "SELECT Control_No, Audit FROM ControlNo"
+        '-------------------------------------------
+        ' Read CONTROL table
+        '-------------------------------------------
+        Public Shared Function ReadControlNo(connection As OleDbConnection) As List(Of CONTROL)
+            Dim controlNos As New List(Of CONTROL)
+            Dim query As String = "SELECT CONTROL_NO FROM CONTROL"
             Using command As New OleDbCommand(query, connection)
                 Using reader As OleDbDataReader = command.ExecuteReader()
                     While reader.Read()
-                        controlNos.Add(New ControlNo() With {
-                            .Control_No = reader("Control_No").ToString(),
-                            .Audit = If(reader("Audit") Is DBNull.Value, Nothing, reader("Audit").ToString())
+                        controlNos.Add(New CONTROL() With {
+                            .Control_No = reader("CONTROL_NO").ToString()
                         })
                     End While
                 End Using
@@ -27,73 +31,107 @@ Namespace Modules
             Return controlNos
         End Function
 
-        Public Shared Function ReadPostTrans(connection As OleDbConnection) As List(Of PostTrans)
-            Dim postTransList As New List(Of PostTrans)
-            Dim query As String = "SELECT posttrans_id, Control_No, TransactionNo, InvoiceNo, Amount, Audit FROM PostTrans"
-            Using command As New OleDbCommand(query, connection)
-                Using reader As OleDbDataReader = command.ExecuteReader()
-                    While reader.Read()
-                        postTransList.Add(New PostTrans() With {
-                            .posttrans_id = CInt(reader("posttrans_id")),
-                            .Control_No = reader("Control_No").ToString(),
-                            .TransactionNo = reader("TransactionNo").ToString(),
-                            .InvoiceNo = reader("InvoiceNo").ToString(),
-                            .Amount = CDec(reader("Amount")),
-                            .Audit = If(reader("Audit") Is DBNull.Value, Nothing, reader("Audit").ToString())
+        '-------------------------------------------
+        ' Read POSTRANS
+        '-------------------------------------------
+        Public Shared Function ReadPostTrans(connection As OleDbConnection) As List(Of POSTRANS)
+            Dim POSTRANS As New List(Of POSTRANS)
+            Dim query As String = "SELECT [CONTROL_NO], [TRANS_NO], [AUDIT], [Z] FROM [POSTRANS]"
+
+            Try
+                Using command As New OleDbCommand(query, connection)
+                    Using reader As OleDbDataReader = command.ExecuteReader()
+                        Dim counter As Integer = 1
+
+                        While reader.Read()
+                            Dim auditValue As String = reader("AUDIT").ToString().Trim().ToUpperInvariant()
+                            Dim zValue As String = reader("Z").ToString().Trim().ToUpperInvariant()
+
+                            ' ✅ Ignore rows where AUDIT = "Y" or Z is not empty
+                            If auditValue <> "Y" AndAlso zValue = "" Then
+                                POSTRANS.Add(New POSTRANS() With {
+                            .POSTRANS = counter,
+                            .CONTROL_NO = reader("CONTROL_NO").ToString(),
+                            .TRANS_NO = reader("TRANS_NO").ToString()
                         })
-                    End While
+                                counter += 1
+                            End If
+                        End While
+                    End Using
                 End Using
-            End Using
-            Return postTransList
+
+            Catch ex As Exception
+                Throw New Exception("Error reading POSTRANS table: " & ex.Message)
+            End Try
+
+            Return POSTRANS
         End Function
 
-        Public Shared Function ReadTranspay(connection As OleDbConnection) As List(Of Transpay)
-            Dim transpayList As New List(Of Transpay)
-            Dim query As String = "SELECT transpay_id, Control_No, TransactionNo, Amount, Audit FROM TransPay"
-            Using command As New OleDbCommand(query, connection)
-                Using reader As OleDbDataReader = command.ExecuteReader()
-                    While reader.Read()
-                        transpayList.Add(New Transpay() With {
-                            .transpay_id = CInt(reader("transpay_id")),
-                            .Control_No = reader("Control_No").ToString(),
-                            .TransactionNo = reader("TransactionNo").ToString(),
-                            .Amount = CDec(reader("Amount")),
-                            .Audit = If(reader("Audit") Is DBNull.Value, Nothing, reader("Audit").ToString())
+
+
+        '-------------------------------------------
+        ' Read TRANSPAY
+        '-------------------------------------------
+        Public Shared Function ReadTranspay(connection As OleDbConnection) As List(Of TRANSPAY)
+            Dim transpayList As New List(Of TRANSPAY)
+            Dim query As String = "SELECT [CONTROL_NO], [TRANS_NO], [AUDIT], [Z] FROM [TRANSPAY]"
+
+            Try
+                Using command As New OleDbCommand(query, connection)
+                    Using reader As OleDbDataReader = command.ExecuteReader()
+                        Dim counter As Integer = 1
+
+                        While reader.Read()
+                            Dim auditValue As String = reader("AUDIT").ToString().Trim().ToUpperInvariant()
+                            Dim zValue As String = reader("Z").ToString().Trim().ToUpperInvariant()
+
+                            If auditValue <> "Y" AndAlso zValue = "" Then
+                                transpayList.Add(New TRANSPAY() With {
+                            .TRANSPAY = counter,
+                            .CONTROL_NO = reader("CONTROL_NO").ToString(),
+                            .TRANS_NO = reader("TRANS_NO").ToString()
                         })
-                    End While
+                                counter += 1
+                            End If
+                        End While
+                    End Using
                 End Using
-            End Using
+
+            Catch ex As Exception
+                Throw New Exception("Error reading TRANSPAY table: " & ex.Message)
+            End Try
+
             Return transpayList
         End Function
 
-        Public Shared Function ScanForMismatches(postTransList As List(Of PostTrans), transpayList As List(Of Transpay), controlNoList As List(Of ControlNo)) As List(Of String)
+        '-------------------------------------------
+        ' Mismatch Scanner (prefix + transaction check)
+        '-------------------------------------------
+        Public Shared Function ScanForMismatches(postTransList As List(Of POSTRANS),
+                                                 transpayList As List(Of TRANSPAY),
+                                                 controlNoList As List(Of CONTROL)) As List(Of String)
+
             Dim mismatches As New List(Of String)
-            ' Placeholder for actual mismatch scanning logic based on rules
-            mismatches.Add("Placeholder Mismatch: PostTrans ID 123 not found in TransPay")
-            mismatches.Add("Placeholder Mismatch: TransPay ID 456 not found in PostTrans")
+
+            ' Compare by prefix + Control_No
+            For Each p In postTransList
+                Dim hasMatch = transpayList.Any(Function(t) t.Control_No = p.Control_No AndAlso t.CounterPrefix = p.CounterPrefix)
+                If Not hasMatch Then
+                    mismatches.Add(String.Format("Missing in TransPay → Counter={0}, ControlNo={1}, TransNo={2}",
+                                                 p.CounterPrefix, p.CONTROL_NO, p.TRANS_NO))
+                End If
+            Next
+
+            For Each t In transpayList
+                Dim hasMatch = postTransList.Any(Function(p) p.Control_No = t.Control_No AndAlso p.CounterPrefix = t.CounterPrefix)
+                If Not hasMatch Then
+                    mismatches.Add(String.Format("Missing in PostTrans → Counter={0}, ControlNo={1}, TransNo={2}",
+                                                 t.CounterPrefix, t.CONTROL_NO, t.TRANS_NO))
+                End If
+            Next
+
             Return mismatches
         End Function
-
-        ' Placeholder for methods to write data back to the database
-        Public Shared Sub UpdateControlNo(connection As OleDbConnection, controlNo As ControlNo)
-            ' Implement update logic
-            System.Threading.Thread.Sleep(100) ' Simulate work
-        End Sub
-
-        Public Shared Sub DeleteTranspay(connection As OleDbConnection, transpayId As Integer)
-            ' Implement delete logic
-            System.Threading.Thread.Sleep(100) ' Simulate work
-        End Sub
-
-        Public Shared Sub InsertPostTrans(connection As OleDbConnection, postTrans As PostTrans)
-            ' Implement insert logic
-            System.Threading.Thread.Sleep(100) ' Simulate work
-        End Sub
-
-        Public Shared Sub UpdatePostTrans(connection As OleDbConnection, postTrans As PostTrans)
-            ' Implement update logic
-            System.Threading.Thread.Sleep(100) ' Simulate work
-        End Sub
 
     End Class
 End Namespace

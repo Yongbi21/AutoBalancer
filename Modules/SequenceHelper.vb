@@ -41,7 +41,7 @@ Namespace Modules
             Return New Tuple(Of List(Of Integer), List(Of Integer), List(Of String))(postTransIds, transpayIds, controlNoIds)
         End Function
 
-        Public Shared Function DetectGaps(postTransList As List(Of PostTrans), transpayList As List(Of Transpay), controlNoList As List(Of ControlNo)) As List(Of String)
+        Public Shared Function DetectGaps(postTransList As List(Of POSTRANS), transpayList As List(Of TRANSPAY), controlNoList As List(Of CONTROL)) As List(Of String)
             Dim gaps As New List(Of String)
             ' Placeholder for actual gap detection logic
             gaps.Add("Placeholder Gap: ID 1205 missing in TransPay")

@@ -53,11 +53,11 @@ Public Class frmMain
 
             ' Step 3: Read Data
             Logger.LogProgress("Reading ControlNo data...")
-            Dim controlNoList As List(Of Models.ControlNo) = DatabaseHelper.ReadControlNo(connection)
+            Dim controlNoList As List(Of Models.CONTROL) = DatabaseHelper.ReadControlNo(connection)
             Logger.LogProgress("Reading PostTrans data...")
-            Dim postTransList As List(Of Models.PostTrans) = DatabaseHelper.ReadPostTrans(connection)
+            Dim postTransList As List(Of Models.POSTRANS) = DatabaseHelper.ReadPostTrans(connection)
             Logger.LogProgress("Reading TransPay data...")
-            Dim transpayList As List(Of Models.Transpay) = DatabaseHelper.ReadTranspay(connection)
+            Dim transpayList As List(Of Models.TRANSPAY) = DatabaseHelper.ReadTranspay(connection)
             UpdateProgressBar(40, "Scanning for Mismatches...")
 
             ' Step 4: Scan for Mismatches
@@ -106,9 +106,9 @@ Public Class frmMain
             Logger.LogProgress("Applying balancing rules...")
             ' Example: Check a PostTrans balance
             If postTransList.Any() Then
-                Dim firstPostTrans As Models.PostTrans = postTransList.First()
-                If Not ValidationHelper.CheckPostTransBalance(firstPostTrans, transpayList) Then
-                    Logger.LogProgress("PostTrans " & firstPostTrans.posttrans_id.ToString() & " is not balanced.")
+                Dim firstPOSTRANS As Models.POSTRANS = postTransList.First()
+                If Not ValidationHelper.CheckPostTransBalance(firstPOSTRANS, transpayList) Then
+                    Logger.LogProgress("PostTrans " & firstPOSTRANS.POSTRANS.ToString() & " is not balanced.")
                     ' Implement correction logic here
                 End If
             End If
