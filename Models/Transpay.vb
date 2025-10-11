@@ -3,6 +3,7 @@
         Public Property TRANSPAY As Integer
         Public Property CONTROL_NO As String
         Public Property TRANS_NO As String
+        Public Property OriginalControlNo As String
 
         ' ✅ Automatically extracts prefix (e.g. "G307" from "G307017654")
         Public ReadOnly Property CounterPrefix As String
